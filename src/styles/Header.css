@@ -1,3 +1,7 @@
+.top-nav {
+    flex: 1;
+}
+
 .top-nav a {
     color:           #F9F9F9;
     font-weight:     400;

@@ -1,0 +1,9 @@
+.item-list {
+    background:  #F2EBD9;
+    color:       #624630;
+    display:     block;
+    list-style:  none;
+    margin-left: 180px;
+    min-height:  260px;
+    padding:     10px;
+}
