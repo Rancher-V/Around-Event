@@ -14,18 +14,19 @@ export class Item extends React.Component{
     }
 
     setFavorite=()=>{
-        console.log(this.state.isFavorite)
+        //console.log(this.state.isFavorite)
+        const req = {'user_id': '1111',
+                     'favorite': [this.props.item.item_id]}
+
         return $.ajax({
             url: `${API_ROOT}/history`,
             method: this.state.isFavorite ? 'DELETE' : 'POST',
             crossDomain: true,
             //headers -> authorization
+            //contentType: 'application/x-www-form-urlencoded',
             contentType: 'application/json;charset=utf-8',
             dataType: 'json',
-            data: {
-                'user_id': 1111,
-                'favorite': this.props.item.item_id
-            },
+            data: JSON.stringify(req),
         }).then((response)=>{
             this.setState((prevState)=>({isFavorite: !prevState.isFavorite}))
             console.log(response);
@@ -37,9 +38,6 @@ export class Item extends React.Component{
             console.log(error)
         });
     }
-
-
-
 
 
     render(){
