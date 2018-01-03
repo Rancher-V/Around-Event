@@ -8,7 +8,7 @@ export class Footer extends React.Component{
                 <p>'Help you find INTERESTING place around.'</p>
                 <br/>
                 <br/>
-                <a href="https://github.com/Rancher-V/" className="project-color">
+                <a href="https://github.com/Rancher-V/Around-Event" className="project-color">
                     <i className="fa fa-github fa-2x"></i>
                 </a>
             </footer>
