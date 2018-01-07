@@ -3,9 +3,10 @@
 @import 'Home.css';
 @import 'Footer.css';
 @import 'Main.css';
-@import 'Aside.css';
+@import 'LeftTabs.css';
 @import 'Itemlist.css';
 @import 'Item.css';
+
 .App {
   text-align: center;
 }

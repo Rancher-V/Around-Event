@@ -1,9 +1,10 @@
 import React from 'react'
-import {Aside} from './Aside'
+import {LeftTabs} from './LeftTabs'
 import {Itemlist} from './Itemlist'
 import {GEO_OPTION, POS_KEY, API_ROOT} from '../constants'
 import $ from 'jquery'
 import {Spin} from 'antd'
+import {TopBanner} from './TopBanner'
 
 export class Home extends  React.Component{
     state={
@@ -47,9 +48,7 @@ export class Home extends  React.Component{
         }
         else{
             this.setState({error: 'Your browser does not support geolocation!'})
-
         }
-
     }
 
     loadingNearbyActivities=(location, radius)=>{
@@ -111,9 +110,9 @@ export class Home extends  React.Component{
     }
 
     render(){
-        const container=(
+        const loadingArea=(
             <section className="main-section">
-                <Aside activities={this.state.activities}
+                <LeftTabs activities={this.state.activities}
                        loadingNearbyActivities={this.loadingNearbyActivities}
                        loadingFavoriteActivities={this.loadingFavoriteActivities}
                        loadingRecommendActivities={this.loadingRecommendActivities}
@@ -125,15 +124,8 @@ export class Home extends  React.Component{
 
         return(
             <div className="container">
-                <header>
-                    <p>
-                        <span>Item</span>
-                        <br /> Recommendation
-                    </p>
-                </header>
-
-                <Spin spinning={this.state.loading} tip={this.state.loadingDescription} delay={500} >{container}</Spin>
-
+                <TopBanner />
+                <Spin spinning={this.state.loading} tip={this.state.loadingDescription} delay={500} >{loadingArea}</Spin>
             </div>
         )
     }

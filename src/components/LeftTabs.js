@@ -1,6 +1,6 @@
 import React from 'react'
 
-export class Aside extends React.Component{
+export class LeftTabs extends React.Component{
 
     searchNearBy=()=>{
         console.log("searching near by");
