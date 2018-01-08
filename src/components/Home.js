@@ -9,6 +9,7 @@ import {TopBanner} from './TopBanner'
 export class Home extends  React.Component{
     state={
         activities: [],
+        selectedTab: '',
         loadingActivities: false,
         loadingFavorite: false,
         loadingRecommend: false,
@@ -20,6 +21,10 @@ export class Home extends  React.Component{
 
     componentDidMount(){
         this.getGeoLocation();
+    }
+
+    componentDidUpdate(){
+        console.log(this.state.selectedTab);
     }
 
 
@@ -109,13 +114,21 @@ export class Home extends  React.Component{
         });
     }
 
+    onSelectedTab=(tabName)=>{
+        this.setState({
+            selectedTab: tabName,
+        });
+    }
+
     render(){
         const loadingArea=(
             <section className="main-section">
                 <LeftTabs activities={this.state.activities}
-                       loadingNearbyActivities={this.loadingNearbyActivities}
-                       loadingFavoriteActivities={this.loadingFavoriteActivities}
-                       loadingRecommendActivities={this.loadingRecommendActivities}
+                          onSelectedTab={this.onSelectedTab}
+                          selectedTab={this.state.selectedTab}
+                       // loadingNearbyActivities={this.loadingNearbyActivities}
+                       // loadingFavoriteActivities={this.loadingFavoriteActivities}
+                       // loadingRecommendActivities={this.loadingRecommendActivities}
                 />
                 <Itemlist activities={this.state.activities}/>
             </section>
