@@ -1,39 +1,57 @@
 import React from 'react'
 import {LeftTabs} from './LeftTabs'
 import {Itemlist} from './Itemlist'
-import {GEO_OPTION, POS_KEY, API_ROOT} from '../constants'
-import $ from 'jquery'
 import {Spin} from 'antd'
 import {TopBanner} from './TopBanner'
+import {API_ROOT, GEO_OPTION, POS_KEY} from '../constants'
+import $ from 'jquery'
 
 export class Home extends  React.Component{
     state={
-        activities: [],
         selectedTab: '',
+        loading: false,
+        loadingDescription: '',
         loadingActivities: false,
         loadingFavorite: false,
         loadingRecommend: false,
         loadingGeo: false,
-        loading: false,
-        loadingDescription: '',
         error: '',
+        activities: [],
     }
 
     componentDidMount(){
         this.getGeoLocation();
+        if(this.state.error === ''){
+            const url = this.settingUrlwithLodingState();
+            this.loadingEvents(url);
+        }
     }
 
     componentDidUpdate(){
         console.log(this.state.selectedTab);
+
     }
 
+    settingUrlwithLodingState=(selectedTab, location, radius)=>{
+        selectedTab = selectedTab ? selectedTab : 'Nearby'
+        const {lat, lon} = location ? location : JSON.parse(localStorage.getItem("POS_KEY"));
+        const range = radius? radius : 20;
+        //this.setState({loadingActivities: true, loading: true, loadingDescription: 'Loading Interesting Events Around You Now...'});      //callback
+
+        switch (selectedTab) {
+            case "Nearby":   return `${API_ROOT}/search?user_id=1111&lat=${lat}&lon=${lon}&radius=${range}`;
+            case "My Favorites": return `${API_ROOT}/history?user_id=1111`;
+            case "Recommendation":  return `${API_ROOT}/recommendation?user_id=1111&lat=${lat}&lon=${lon}&radius=${range}`;
+            default:      return ``;
+        }
+    }
 
     onSuccessLoadGeoLocation=(position)=>{
         this.setState({loadingGeo:false, loading: false, loadingDescription: '', error:''});
         const {latitude: lat, longitude: lon} = position.coords;
         console.log(position.coords);
         localStorage.setItem(POS_KEY, JSON.stringify({lat: lat, lon: lon}));
-        this.loadingNearbyActivities();
+        //this.loadingNearbyActivities();
     }
 
     onFailedLoadGeoLocation=()=>{
@@ -56,12 +74,21 @@ export class Home extends  React.Component{
         }
     }
 
-    loadingNearbyActivities=(location, radius)=>{
-        this.setState({loadingActivities: true, loading: true, loadingDescription: 'Loading Interesting Events Around You Now...'});
-        const {lat, lon} = location ? location : JSON.parse(localStorage.getItem("POS_KEY"));
-        const range = radius? radius : 20;
+    onSelectedTab=(tabName)=>{
+        this.setState({
+            selectedTab: tabName,
+        });
+
+        if(this.state.error === ''){
+            const url = this.settingUrlwithLodingState(tabName);
+            console.log(url)
+            this.loadingEvents(url);
+        }
+    }
+
+    loadingEvents=(url)=>{
         return $.ajax({
-            url: `${API_ROOT}/search?user_id=1111&lat=${lat}&lon=${lon}&radius=${range}`,
+            url: url,
             method: 'GET',
             //headers -> authorization
         }).then((response)=>{
@@ -76,64 +103,17 @@ export class Home extends  React.Component{
         });
     }
 
-    loadingFavoriteActivities=()=>{
-        this.setState({loadingFavorite: true, loading: true, loadingDescription: 'Loading Your Favorite Now...'});
-        return $.ajax({
-            url: `${API_ROOT}/history?user_id=1111`,
-            method: 'GET',
-            //headers -> authorization
-        }).then((response)=>{
-            this.setState({activities: response, error:''});
-            console.log(response);
-        }, (error)=>{
-            this.setState({error: error.responseText});
-        }).then(()=>{
-            this.setState({loadingFavorite: false, loading: false, loadingDescription: ''});
-        }).catch((error)=>{
-            console.log(error)
-        });
-    }
-
-    loadingRecommendActivities=(location, radius)=>{
-        this.setState({loadingRecommend: true, error:'', loading: true, loadingDescription: 'Loading Recommend Activities Now...'});
-        const {lat, lon} = location ? location : JSON.parse(localStorage.getItem("POS_KEY"));
-        const range = radius? radius : 20;
-        return $.ajax({
-            url: `${API_ROOT}/recommendation?user_id=1111&lat=${lat}&lon=${lon}&radius=${range}`,
-            method: 'GET',
-            //headers -> authorization
-        }).then((response)=>{
-            this.setState({activities: response, error:''});
-            console.log(response);
-        }, (error)=>{
-            this.setState({error: error.responseText});
-        }).then(()=>{
-            this.setState({loadingRecommend: false, loading: false, loadingDescription: ''});
-        }).catch((error)=>{
-            console.log(error)
-        });
-    }
-
-    onSelectedTab=(tabName)=>{
-        this.setState({
-            selectedTab: tabName,
-        });
-    }
 
     render(){
         const loadingArea=(
             <section className="main-section">
-                <LeftTabs activities={this.state.activities}
-                          onSelectedTab={this.onSelectedTab}
+                <LeftTabs onSelectedTab={this.onSelectedTab}
                           selectedTab={this.state.selectedTab}
-                       // loadingNearbyActivities={this.loadingNearbyActivities}
-                       // loadingFavoriteActivities={this.loadingFavoriteActivities}
-                       // loadingRecommendActivities={this.loadingRecommendActivities}
                 />
-                <Itemlist activities={this.state.activities}/>
+                <Itemlist   activities={this.state.activities}
+                />
             </section>
         )
-
 
         return(
             <div className="container">
@@ -142,7 +122,4 @@ export class Home extends  React.Component{
             </div>
         )
     }
-
-
-
 }
