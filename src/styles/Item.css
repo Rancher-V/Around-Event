@@ -1,10 +1,10 @@
 
 .item {
-    align-items:   center;
+    align-items: center;
     border-bottom: 1px solid #FFFFFF;
-    display:       flex;
-    margin:        10px;
-    padding:       15px;
+    display: flex;
+    margin: 10px;
+    padding: 15px;
 }
 
 .item:last-child {
@@ -18,18 +18,18 @@
 .item img {
     border: 1px solid #FFFFFF;
     height: 80px;
-    width:  80px;
+    width: 80px;
 }
 
 .item > div:first-of-type {
-    flex:         1;
-    margin-left:  10px;
+    flex: 1;
+    margin-left: 10px;
     margin-right: 10px;
 }
 
 .item-name {
-    color:           #624630;
-    font-weight:     400;
+    color: #624630;
+    font-weight: 400;
     text-decoration: none;
 }
 
@@ -38,9 +38,9 @@
 }
 
 .item-address {
-    line-height:   20px;
+    line-height: 20px;
     padding-right: 20px;
-    text-align:    right;
+    text-align: right;
 }
 
 /*.stars {*/
@@ -51,10 +51,10 @@
 
 .fav-link {
     border-left: 1px solid #FFFFFF;
-    cursor:      pointer;
+    cursor: pointer;
     line-height: 60px;
-    text-align:  center;
-    width:       60px;
+    text-align: center;
+    width: 60px;
 }
 
 .fav-link:hover {

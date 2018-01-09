@@ -1,8 +1,8 @@
 import React from 'react'
 
-export class Footer extends React.Component{
-    render(){
-        return(
+export class Footer extends React.Component {
+    render() {
+        return (
             <footer>
                 <p className="title">Our Mission</p>
                 <p>'Help you find INTERESTING place around.'</p>

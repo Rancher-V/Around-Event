@@ -1,10 +1,10 @@
 import React from 'react'
 import {Home} from './Home'
 
-export class Main extends  React.Component{
+export class Main extends React.Component {
 
-    render(){
-        return(
+    render() {
+        return (
 
             <Home/>
 

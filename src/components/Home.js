@@ -5,8 +5,8 @@ import {Spin} from 'antd'
 import {TopBanner} from './TopBanner'
 import {GEO_OPTION, POS_KEY} from '../constants'
 
-export class Home extends  React.Component{
-    state={
+export class Home extends React.Component {
+    state = {
         selectedTab: '',
         loading: false,
         loadingDescription: '',
@@ -14,15 +14,15 @@ export class Home extends  React.Component{
         loadingFavorite: false,
         loadingRecommend: false,
         loadingGeo: false,
-        error: '',
+        error: ''
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getGeoLocation();
     }
 
-    onSuccessLoadGeoLocation=(position)=>{
-        this.setState({loadingGeo:false, loading: false, loadingDescription: '', error:''});
+    onSuccessLoadGeoLocation = (position) => {
+        this.setState({loadingGeo: false, loading: false, loadingDescription: '', error: ''});
         const {latitude: lat, longitude: lon} = position.coords;
         console.log(position.coords);
         localStorage.setItem(POS_KEY, JSON.stringify({lat: lat, lon: lon}));
@@ -30,51 +30,59 @@ export class Home extends  React.Component{
         //this.loadingNearbyActivities();
     }
 
-    onFailedLoadGeoLocation=()=>{
-        this.setState({loadingGeoLocation: false, loading: false, loadingDescription: '', error: 'Failed to load geo location'});
+    onFailedLoadGeoLocation = () => {
+        this.setState({
+            loadingGeoLocation: false,
+            loading: false,
+            loadingDescription: '',
+            error: 'Failed to load geo location'
+        });
     }
 
 
-    getGeoLocation=()=>{
+    getGeoLocation = () => {
         console.log("loading geolocation now");
-        if(navigator && navigator.geolocation){
-            this.setState({loadingGeo:true, loading: true, loadingDescription: 'Loading Geo Location Now...', error: ''});
+        if (navigator && navigator.geolocation) {
+            this.setState({
+                loadingGeo: true,
+                loading: true,
+                loadingDescription: 'Loading Geo Location Now...',
+                error: ''
+            });
             navigator.geolocation.getCurrentPosition(
                 this.onSuccessLoadGeoLocation,
                 this.onFailedLoadGeoLocation,
                 GEO_OPTION
             );
         }
-        else{
+        else {
             this.setState({error: 'Your browser does not support geolocation!'})
         }
     }
 
 
-
-
-    onSelectedTab=(tabName)=>{
+    onSelectedTab = (tabName) => {
         this.setState({
-            selectedTab: tabName,
+            selectedTab: tabName
         });
     }
 
-    render(){
-        const loadingArea=(
+    render() {
+        const loadingArea = (
             <section className="main-section">
                 <LeftTabs onSelectedTab={this.onSelectedTab}
                           selectedTab={this.state.selectedTab}
                 />
-                <Itemlist   selectedTab={this.state.selectedTab}
-                            loadingErr = {this.state.error}
+                <Itemlist selectedTab={this.state.selectedTab}
+                          loadingErr={this.state.error}
                 />
             </section>
         )
 
-        return(
+        return (
             <div className="container">
-                <TopBanner />
-                <Spin spinning={this.state.loading} tip={this.state.loadingDescription} delay={500} >{loadingArea}</Spin>
+                <TopBanner/>
+                <Spin spinning={this.state.loading} tip={this.state.loadingDescription} delay={500}>{loadingArea}</Spin>
             </div>
         )
     }

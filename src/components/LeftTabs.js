@@ -1,52 +1,32 @@
 import React from 'react'
 import {TabItem} from './TabItem'
 
-export class LeftTabs extends React.Component{
+export class LeftTabs extends React.Component {
 
-    // searchNearBy=()=>{
-    //     console.log("searching near by");
-    //     this.props.loadingNearbyActivities();
-    // }
-    //
-    // searchFavorite=()=>{
-    //     console.log("searching Favorite");
-    //     this.props.loadingFavoriteActivities();
-    // }
-    //
-    // getRecommend=()=>{
-    //     console.log("getting recommend");
-    //     this.props.loadingRecommendActivities();
-    // }
-
-    render(){
-        const iconName ={
-            'Nearby' : 'fa fa-map-marker',
-            'My Favorites' : 'fa fa-heart',
-            'Recommendation' : 'fa fa-thumbs-up',
+    render() {
+        const iconName = {
+            'Nearby': 'fa fa-map-marker',
+            'My Favorites': 'fa fa-heart',
+            'Recommendation': 'fa fa-thumbs-up'
         }
 
-        return(
-            <aside id="item-nav" >
+        return (
+            <aside id="item-nav">
                 <div className="nav-icon">
                     <i className="fa fa-sitemap fa-2x"></i>
                 </div>
                 <nav className="main-nav">
                     {Object.entries(iconName).map(([key, value]) =>
                         <TabItem
-                            key = {key}
-                            tabName= {key}
+                            key={key}
+                            tabName={key}
                             iconName={value}
-                            onSelectedTab = {this.props.onSelectedTab}
-                            isHighlighted = {this.props.selectedTab === key ? 'active' : ''}
+                            onSelectedTab={this.props.onSelectedTab}
+                            isHighlighted={this.props.selectedTab === key ? 'active' : ''}
                         />
                     )}
                 </nav>
             </aside>
-
-
-
-
-
         )
 
     }
