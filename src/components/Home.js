@@ -7,13 +7,10 @@ import {GEO_OPTION, POS_KEY} from '../constants'
 
 export class Home extends React.Component {
     state = {
+        selectTabChanged: false,
         selectedTab: '',
         loading: false,
         loadingDescription: '',
-        loadingActivities: false,
-        loadingFavorite: false,
-        loadingRecommend: false,
-        loadingGeo: false,
         error: ''
     }
 
@@ -22,17 +19,14 @@ export class Home extends React.Component {
     }
 
     onSuccessLoadGeoLocation = (position) => {
-        this.setState({loadingGeo: false, loading: false, loadingDescription: '', error: ''});
+        this.setState({loading: false, loadingDescription: '', error: ''});
         const {latitude: lat, longitude: lon} = position.coords;
         console.log(position.coords);
         localStorage.setItem(POS_KEY, JSON.stringify({lat: lat, lon: lon}));
-        //this.loadingEvents();
-        //this.loadingNearbyActivities();
     }
 
     onFailedLoadGeoLocation = () => {
         this.setState({
-            loadingGeoLocation: false,
             loading: false,
             loadingDescription: '',
             error: 'Failed to load geo location'
@@ -44,7 +38,6 @@ export class Home extends React.Component {
         console.log("loading geolocation now");
         if (navigator && navigator.geolocation) {
             this.setState({
-                loadingGeo: true,
                 loading: true,
                 loadingDescription: 'Loading Geo Location Now...',
                 error: ''
@@ -63,8 +56,29 @@ export class Home extends React.Component {
 
     onSelectedTab = (tabName) => {
         this.setState({
-            selectedTab: tabName
+            selectedTab: tabName,
+            selectTabChanged: true
         });
+    }
+
+    resetTabStatus = () => {
+        this.setState({
+            selectTabChanged: false
+        });
+    }
+
+    setLoadingStatus = (status, desc) => {
+        //console.log(desc)
+        this.setState({
+            loading: status,
+            loadingDescription: desc
+        })
+    }
+
+    setLoadingError = (err) => {
+        this.setState({
+            error: err
+        })
     }
 
     render() {
@@ -75,6 +89,10 @@ export class Home extends React.Component {
                 />
                 <Itemlist selectedTab={this.state.selectedTab}
                           loadingErr={this.state.error}
+                          resetTabStatus={this.resetTabStatus}
+                          selectTabChanged={this.state.selectTabChanged}
+                          setLoadingStatus={this.setLoadingStatus}
+                          setLoadingError={this.setLoadingError}
                 />
             </section>
         )
