@@ -3,7 +3,6 @@ import {Item} from './Item'
 import {API_ROOT} from '../constants'
 import $ from 'jquery'
 
-
 export class Itemlist extends React.Component {
 
     state = {
@@ -15,11 +14,9 @@ export class Itemlist extends React.Component {
             this.loadingEvents();
     }
 
-    componentDidUpdate() {
-        //console.log(this.props.selectedTab);
-        if (this.props.selectTabChanged && this.props.loadingErr === '') {
-            this.loadingEvents();
-            this.props.resetTabStatus();
+    componentWillReceiveProps(nextProps){
+        if(nextProps.selectedTab !== this.props.selectedTab && this.props.loadingErr === ''){
+            this.loadingEvents(nextProps.selectedTab);
         }
     }
 
@@ -45,9 +42,9 @@ export class Itemlist extends React.Component {
         }
     }
 
-    loadingEvents = (location, radius) => {
+    loadingEvents = (loadingElement, location, radius) => {
         return $.ajax({
-            url: this.settingUrlwithLodingState(this.props.selectedTab, location, radius),
+            url: this.settingUrlwithLodingState(loadingElement, location, radius),
             method: 'GET'
             //headers -> authorization
         }).then((response) => {
@@ -62,6 +59,10 @@ export class Itemlist extends React.Component {
             console.log(error)
         });
     }
+
+
+
+
 
     render() {
         return (

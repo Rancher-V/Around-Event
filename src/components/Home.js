@@ -7,7 +7,6 @@ import {GEO_OPTION, POS_KEY} from '../constants'
 
 export class Home extends React.Component {
     state = {
-        selectTabChanged: false,
         selectedTab: '',
         loading: false,
         loadingDescription: '',
@@ -57,13 +56,6 @@ export class Home extends React.Component {
     onSelectedTab = (tabName) => {
         this.setState({
             selectedTab: tabName,
-            selectTabChanged: true
-        });
-    }
-
-    resetTabStatus = () => {
-        this.setState({
-            selectTabChanged: false
         });
     }
 
@@ -81,16 +73,32 @@ export class Home extends React.Component {
         })
     }
 
+    // getLoadings=()=>{
+    //     if(this.state.loading){
+    //         return <Spin spinning={this.state.loading} tip={this.state.loadingDescription} delay={500}></Spin>
+    //     }
+    //     else
+    //     {
+    //         return(
+    //             <Itemlist selectedTab={this.state.selectedTab}
+    //                       loadingErr={this.state.error}
+    //                       setLoadingStatus={this.setLoadingStatus}
+    //                       setLoadingError={this.setLoadingError}
+    //             />
+    //         )
+    //     }
+    // }
+
     render() {
         const loadingArea = (
             <section className="main-section">
                 <LeftTabs onSelectedTab={this.onSelectedTab}
                           selectedTab={this.state.selectedTab}
                 />
+                {/*{this.getLoadings()}*/}
+
                 <Itemlist selectedTab={this.state.selectedTab}
                           loadingErr={this.state.error}
-                          resetTabStatus={this.resetTabStatus}
-                          selectTabChanged={this.state.selectTabChanged}
                           setLoadingStatus={this.setLoadingStatus}
                           setLoadingError={this.setLoadingError}
                 />
@@ -100,6 +108,7 @@ export class Home extends React.Component {
         return (
             <div className="container">
                 <TopBanner/>
+                {/*{loadingArea}*/}
                 <Spin spinning={this.state.loading} tip={this.state.loadingDescription} delay={500}>{loadingArea}</Spin>
             </div>
         )
